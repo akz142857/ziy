@@ -1,0 +1,104 @@
+---
+import OntologyLayout from '../../../layouts/OntologyLayout.astro';
+import { ontologyLessons, ontologyTracks } from '../../../data/ontology';
+
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const bookHome = `${base}books/ontology/`;
+const lessonUrl = (slug: string) => `${bookHome}lesson/${slug}/`;
+---
+
+<OntologyLayout>
+  <main>
+    <section class="hero">
+      <div class="hero-orbit orbit-one"></div>
+      <div class="hero-orbit orbit-two"></div>
+      <div class="hero-inner">
+        <a class="home-link" href={base}>← ZiyOne</a>
+        <p class="eyebrow">PALANTIR FOUNDRY · ONTOLOGY</p>
+        <h1>把企业数据，变成<br />可以理解和行动的世界</h1>
+        <p class="hero-copy">
+          一套从零开始的中文学习笔记。通过外卖和设备维护案例，理解 Object、Link、Function、Action，以及它们如何连接人、软件与 AI。
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href={lessonUrl('01')}>开始第一课 <span>→</span></a>
+          <a class="button button-secondary" href="#curriculum">查看课程地图</a>
+        </div>
+        <div class="hero-stats" aria-label="内容概览">
+          <div><strong>14</strong><span>章节</span></div>
+          <div><strong>58</strong><span>一手资料链接</span></div>
+          <div><strong>4</strong><span>业务场景</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="thesis section-wrap">
+      <p class="section-kicker">核心直觉</p>
+      <blockquote>
+        Ontology 不是给数据换一组更漂亮的名称，<br />
+        而是建立一个人、软件和 AI 都能共同理解、查询和改变的业务世界。
+      </blockquote>
+      <div class="concept-flow" aria-label="Ontology 决策闭环">
+        {
+          [
+            ['01', '可信数据'], ['02', '业务对象'], ['03', '关系与逻辑'],
+            ['04', '受控行动'], ['05', '结果反馈'],
+          ].map(([number, label], index) => (
+            <div class="concept-step">
+              <span>{number}</span><strong>{label}</strong>{index < 4 && <i>→</i>}
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="curriculum section-wrap" id="curriculum">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">课程地图</p>
+          <h2>从直觉到生产实践</h2>
+        </div>
+        <p>第一次学习不必记住所有产品名。先理解“对象—关系—逻辑—动作”，再进入企业级能力。</p>
+      </div>
+
+      {
+        ontologyTracks.map((track) => (
+          <div class="track">
+            <div class="track-label">
+              <span>{track.range}</span>
+              <h3>{track.name}</h3>
+              <p>{track.description}</p>
+            </div>
+            <div class="lesson-grid">
+              {ontologyLessons.filter((lesson) => track.lessons.includes(lesson.slug)).map((lesson) => (
+                <a class="lesson-card" href={lessonUrl(lesson.slug)}>
+                  <span class="lesson-number">{lesson.slug}</span>
+                  <div>
+                    <h4>{lesson.shortTitle}</h4>
+                    <p>{lesson.description}</p>
+                  </div>
+                  <span class="card-arrow">↗</span>
+                </a>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </section>
+
+    <section class="source-note">
+      <div class="section-wrap source-note-inner">
+        <div>
+          <p class="section-kicker">SOURCE FIRST</p>
+          <h2>从官方原文出发</h2>
+        </div>
+        <p>技术结论优先引用 Palantir 英文官方文档，并区分官方定义、教学类比、概念伪代码与课程设计建议。</p>
+        <a class="text-link" href={lessonUrl('01')}>进入课程 <span>→</span></a>
+      </div>
+    </section>
+
+    <footer class="site-footer section-wrap">
+      <p>Palantir Ontology 中文学习笔记</p>
+      <p>学习资料独立整理，与 Palantir Technologies 无隶属关系。</p>
+    </footer>
+  </main>
+</OntologyLayout>

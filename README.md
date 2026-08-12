@@ -1,9 +1,8 @@
 # ZiyOne
 
-ZiyOne 个人主页 —— AI-native builder 的个人实验室与作品操作台。
+ZiyOne 是一个使用 **Astro + Bun** 构建的个人数字档案，用来收录开源项目、学习实验与电子书。
 
-用 **Astro + Bun** 构建,部署在 GitHub Pages:
-<https://akz142857.github.io/ZiyOne/>
+站点保持单页结构，视觉方向受日本设计中的留白、克制与用之美启发。
 
 ## 开发
 
@@ -15,23 +14,24 @@ bun run preview    # 预览构建产物
 bun run check      # 类型检查
 ```
 
-## 结构
+## 内容维护
+
+编辑 `src/data/site.ts` 即可更新个人信息、项目、学习路径与电子书。
+
+### 电子书存储约定
 
 ```text
-src/
-├── pages/        # 路由页面 (index.astro, works.astro)
-├── layouts/      # BaseLayout
-├── components/   # SiteHeader / SiteFooter / WorkCard
-├── data/         # 内容数据 (profile, works, research, learning, watchlist)
-├── lib/          # withBase() 等工具
-└── styles/       # tokens.css + global.css
-public/
-└── works/english-picture-book/   # Tomi 英语启蒙绘本(静态作品,原样部署)
+src/content/books/<book-slug>/   # Markdown 原稿，内容的唯一来源
+src/data/<book-slug>.ts          # 章节、分组和简介元数据
+src/pages/books/<book-slug>/     # 书籍首页与阅读路由
+src/layouts/                     # 书籍专用页面外壳
+src/styles/<book-slug>.css       # 书籍独立样式，不影响个人首页
+public/books/<book-slug>/        # 封面、分享图与其他静态资源
 ```
 
-## 加内容
-
-编辑 `src/data/*.ts` 即可增删作品、研究方向、关注项;新作品页放 `src/pages/`,静态作品放 `public/works/`。
+`Ontology` 已迁移到 `books/ontology` 命名空间。后续修改书稿时，以
+`src/content/books/ontology/*.md` 为准，不再依赖原始 `Ontology/site`
+项目。
 
 ## X 归档脚本
 

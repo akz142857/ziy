@@ -1,0 +1,139 @@
+---
+import type { MarkdownHeading } from 'astro';
+import OntologyLayout from '../../../../layouts/OntologyLayout.astro';
+import { ontologyLessons, type OntologyLesson } from '../../../../data/ontology';
+
+interface Props {
+  lesson: OntologyLesson;
+}
+
+interface ChapterModule {
+  Content: any;
+  getHeadings: () => Promise<MarkdownHeading[]>;
+}
+
+const chapterModules = import.meta.glob('../../../../content/books/ontology/*.md');
+
+export function getStaticPaths() {
+  return ontologyLessons.map((lesson) => ({
+    params: { slug: lesson.slug },
+    props: { lesson },
+  }));
+}
+
+const { lesson } = Astro.props;
+const chapterKey = `../../../../content/books/ontology/${lesson.slug}.md`;
+const loadChapter = chapterModules[chapterKey];
+
+if (!loadChapter) {
+  throw new Error(`Missing Ontology chapter: ${lesson.slug}`);
+}
+
+const chapter = await loadChapter() as ChapterModule;
+const { Content } = chapter;
+const headings = (await chapter.getHeadings()).filter((heading) => heading.depth === 2 || heading.depth === 3);
+const chapterIndex = ontologyLessons.findIndex((item) => item.slug === lesson.slug);
+const previous = ontologyLessons[chapterIndex - 1];
+const next = ontologyLessons[chapterIndex + 1];
+const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const bookHome = `${base}books/ontology/`;
+const lessonUrl = (slug: string) => `${bookHome}lesson/${slug}/`;
+---
+
+<OntologyLayout title={`${lesson.slug} · ${lesson.shortTitle} · Ontology 中文学习笔记`} description={lesson.description}>
+  <div class="reader-page">
+    <header class="reader-header">
+      <a class="brand" href={bookHome}>
+        <span class="brand-mark">O</span>
+        <span><strong>Ontology</strong><small>中文学习笔记</small></span>
+      </a>
+      <div class="reader-progress" aria-hidden="true"><span style={`width: ${((chapterIndex + 1) / ontologyLessons.length) * 100}%`}></span></div>
+      <span class="reader-count">{chapterIndex + 1} / {ontologyLessons.length}</span>
+    </header>
+
+    <div class="reader-layout">
+      <aside class="lesson-sidebar" aria-label="课程目录">
+        <a class="back-home" href={bookHome}>← 课程首页</a>
+        <p class="sidebar-label">全部章节</p>
+        <nav>
+          {ontologyLessons.map((item) => (
+            <a class:list={{ active: item.slug === lesson.slug }} href={lessonUrl(item.slug)} aria-current={item.slug === lesson.slug ? 'page' : undefined}>
+              <span>{item.slug}</span><strong>{item.shortTitle}</strong>
+            </a>
+          ))}
+        </nav>
+      </aside>
+
+      <main class="article-column">
+        <article class="markdown-body"><Content /></article>
+      </main>
+
+      <aside class="toc-sidebar" aria-label="本页目录">
+        <p>本页目录</p>
+        <nav>
+          {headings.map((heading) => (
+            <a class:list={{ sub: heading.depth === 3 }} href={`#${heading.slug}`}>{heading.text}</a>
+          ))}
+        </nav>
+        <a class="official-link" href="https://www.palantir.com/docs/foundry/ontology/overview" target="_blank" rel="noreferrer">Palantir 官方文档 ↗</a>
+      </aside>
+
+      <nav class="lesson-pager" aria-label="章节导航">
+        {previous ? (
+          <a href={lessonUrl(previous.slug)}><span>上一课</span><strong>← {previous.shortTitle}</strong></a>
+        ) : (
+          <a href={bookHome}><span>返回</span><strong>← 课程首页</strong></a>
+        )}
+        {next ? (
+          <a class="next" href={lessonUrl(next.slug)}><span>下一课</span><strong>{next.shortTitle} →</strong></a>
+        ) : (
+          <a class="next" href={bookHome}><span>完成</span><strong>课程首页 →</strong></a>
+        )}
+      </nav>
+    </div>
+  </div>
+
+  <script>
+    const renderDiagrams = async () => {
+      const blocks = Array.from(document.querySelectorAll<HTMLElement>('pre[data-language="mermaid"], pre:has(code.language-mermaid)'));
+      if (!blocks.length) return;
+
+      const { default: mermaid } = await import('mermaid');
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: 'neutral',
+        securityLevel: 'loose',
+        fontFamily: 'Inter, system-ui, sans-serif',
+      });
+
+      const nodes = blocks.map((block, index) => {
+        const container = document.createElement('div');
+        container.className = 'mermaid';
+        container.id = `ontology-mermaid-${index}`;
+        container.textContent = block.textContent || '';
+        block.replaceWith(container);
+        return container;
+      });
+
+      await mermaid.run({ nodes });
+    };
+
+    const observeHeadings = () => {
+      const links = Array.from(document.querySelectorAll<HTMLAnchorElement>('.toc-sidebar a[href^="#"]'));
+      const headings = links
+        .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+        .filter((heading): heading is HTMLElement => Boolean(heading));
+
+      const observer = new IntersectionObserver((entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (!visible) return;
+        links.forEach((link) => link.classList.toggle('active', link.hash === `#${visible.target.id}`));
+      }, { rootMargin: '-15% 0px -75% 0px' });
+
+      headings.forEach((heading) => observer.observe(heading));
+    };
+
+    renderDiagrams().catch(() => undefined);
+    observeHeadings();
+  </script>
+</OntologyLayout>
