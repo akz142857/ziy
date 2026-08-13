@@ -5,4 +5,4 @@ resources:
   - ../../base
 images:
   - name: ghcr.io/akz142857/ziyone-web
-    newTag: sha-6ae54b1
+    newTag: sha-39b42ad
