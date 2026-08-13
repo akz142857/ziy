@@ -104,7 +104,7 @@ const currentYear = new Date().getFullYear();
   <body>
     <a class="skip-link" href="#content">{copy.accessibility.skip}</a>
 
-    <header class="site-header">
+    <header class="site-header" data-site-header>
       <div class="shell header-inner">
         <nav class="main-nav" aria-label={copy.accessibility.mainNavigation}>
           <a href="#works">{copy.nav.works}</a>
@@ -290,6 +290,71 @@ const currentYear = new Date().getFullYear();
           }
         });
       });
+
+      (() => {
+        const header = document.querySelector('[data-site-header]');
+        if (!(header instanceof HTMLElement)) return;
+
+        const initialDelay = 5_000;
+        const idleDelay = 2_500;
+        let hideTimer;
+        let interactionLocked = false;
+
+        const showHeader = () => {
+          header.classList.remove('is-hidden');
+        };
+
+        const cancelHide = () => {
+          window.clearTimeout(hideTimer);
+        };
+
+        const scheduleHide = (delay = idleDelay) => {
+          cancelHide();
+          if (interactionLocked || document.visibilityState === 'hidden') return;
+          hideTimer = window.setTimeout(() => {
+            if (!interactionLocked) header.classList.add('is-hidden');
+          }, delay);
+        };
+
+        const revealTemporarily = () => {
+          showHeader();
+          scheduleHide();
+        };
+
+        header.addEventListener('pointerenter', () => {
+          interactionLocked = true;
+          cancelHide();
+          showHeader();
+        });
+
+        header.addEventListener('pointerleave', () => {
+          interactionLocked = header.contains(document.activeElement);
+          scheduleHide();
+        });
+
+        header.addEventListener('focusin', () => {
+          interactionLocked = true;
+          cancelHide();
+          showHeader();
+        });
+
+        header.addEventListener('focusout', () => {
+          window.requestAnimationFrame(() => {
+            interactionLocked = header.matches(':hover') || header.contains(document.activeElement);
+            scheduleHide();
+          });
+        });
+
+        window.addEventListener('scroll', revealTemporarily, { passive: true });
+        window.addEventListener('wheel', revealTemporarily, { passive: true });
+        window.addEventListener('touchmove', revealTemporarily, { passive: true });
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') revealTemporarily();
+          else cancelHide();
+        });
+
+        scheduleHide(initialDelay);
+      })();
     </script>
   </body>
 </html>
