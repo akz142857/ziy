@@ -1,0 +1,320 @@
+<div class="wandering-walker" data-wandering-walker aria-hidden="true">
+  <svg class="walker-scene" data-scene focusable="false">
+    <path class="terrain" data-terrain d="" />
+
+    <g class="figure" data-figure>
+      <circle class="figure-head" cx="0" cy="-31" r="3.2" />
+      <line class="figure-torso" x1="0" y1="-27.5" x2="0" y2="-15" />
+
+      <g class="figure-arms">
+        <polyline data-arm-back points="0,-24 0,-20 0,-16" />
+        <polyline data-arm-front points="0,-24 0,-20 0,-16" />
+      </g>
+
+      <g class="figure-legs">
+        <polyline data-leg-back points="-1,-15 0,-8 0,0" />
+        <polyline data-leg-front points="1,-15 0,-8 0,0" />
+      </g>
+    </g>
+  </svg>
+</div>
+
+<script>
+  const clamp = (value: number, min: number, max: number) =>
+    Math.min(max, Math.max(min, value));
+
+  const mix = (from: number, to: number, amount: number) =>
+    from + (to - from) * amount;
+
+  const randomBetween = (min: number, max: number) =>
+    min + Math.random() * (max - min);
+
+  const hash = (value: number, seed: number) => {
+    const result = Math.sin(value * 127.1 + seed * 311.7) * 43758.5453123;
+    return (result - Math.floor(result)) * 2 - 1;
+  };
+
+  const smoothNoise = (value: number, seed: number) => {
+    const lower = Math.floor(value);
+    const fraction = value - lower;
+    const eased = fraction * fraction * (3 - 2 * fraction);
+    return mix(hash(lower, seed), hash(lower + 1, seed), eased);
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-wandering-walker]').forEach((root) => {
+    const svg = root.querySelector<SVGSVGElement>('[data-scene]');
+    const terrain = root.querySelector<SVGPathElement>('[data-terrain]');
+    const figure = root.querySelector<SVGGElement>('[data-figure]');
+    const armBack = root.querySelector<SVGPolylineElement>('[data-arm-back]');
+    const armFront = root.querySelector<SVGPolylineElement>('[data-arm-front]');
+    const legBack = root.querySelector<SVGPolylineElement>('[data-leg-back]');
+    const legFront = root.querySelector<SVGPolylineElement>('[data-leg-front]');
+
+    if (!svg || !terrain || !figure || !armBack || !armFront || !legBack || !legFront) {
+      return;
+    }
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const seed = Math.random() * 10_000;
+    let width = 1;
+    let height = 1;
+    let worldOffset = Math.random() * 4_000;
+    let walkerX = 0;
+    let targetX = 0;
+    let velocity = randomBetween(27, 39);
+    let targetVelocity = velocity;
+    let facing = 1;
+    let gait = Math.random() * Math.PI * 2;
+    let nextDecision = performance.now() + randomBetween(3_800, 7_600);
+    let previousTime = performance.now();
+    let frame = 0;
+    let visible = true;
+
+    const terrainY = (worldX: number) => {
+      const amplitude = Math.min(34, Math.max(16, height * 0.21));
+      const broad = smoothNoise(worldX / 310, seed) * amplitude * 0.72;
+      const detail = smoothNoise(worldX / 128, seed + 19.7) * amplitude * 0.28;
+      return height * 0.72 + broad + detail;
+    };
+
+    const drawTerrain = () => {
+      const sampleGap = width < 620 ? 9 : 11;
+      let path = '';
+
+      for (let x = -sampleGap; x <= width + sampleGap; x += sampleGap) {
+        const y = terrainY(worldOffset + x);
+        path += `${x === -sampleGap ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)} `;
+      }
+
+      terrain.setAttribute('d', path.trim());
+    };
+
+    const setLimb = (
+      limb: SVGPolylineElement,
+      hipX: number,
+      hipY: number,
+      endX: number,
+      endY: number,
+      bend: number,
+    ) => {
+      const jointX = mix(hipX, endX, 0.48) + bend;
+      const jointY = mix(hipY, endY, 0.5) - 1.2;
+      limb.setAttribute(
+        'points',
+        `${hipX.toFixed(2)},${hipY.toFixed(2)} ${jointX.toFixed(2)},${jointY.toFixed(2)} ${endX.toFixed(2)},${endY.toFixed(2)}`,
+      );
+    };
+
+    const drawFigure = () => {
+      const worldX = worldOffset + walkerX;
+      const groundY = terrainY(worldX);
+      const slope = terrainY(worldX + 2) - terrainY(worldX - 2);
+      const angle = clamp((Math.atan2(slope, 4) * 180) / Math.PI, -8, 8);
+      const step = Math.sin(gait);
+      const oppositeStep = Math.sin(gait + Math.PI);
+      const lift = Math.max(0, Math.cos(gait)) * 2.3;
+      const oppositeLift = Math.max(0, Math.cos(gait + Math.PI)) * 2.3;
+      const footFrontX = step * 6.8;
+      const footBackX = oppositeStep * 6.8;
+      const armSwing = step * 5.3;
+
+      figure.setAttribute(
+        'transform',
+        `translate(${walkerX.toFixed(2)} ${groundY.toFixed(2)}) rotate(${angle.toFixed(2)}) scale(${facing} 1)`,
+      );
+
+      setLimb(legFront, 1, -15, footFrontX, -lift, -step * 1.5);
+      setLimb(legBack, -1, -15, footBackX, -oppositeLift, -oppositeStep * 1.5);
+      setLimb(armFront, 0, -24, -armSwing, -16.5, step * 0.8);
+      setLimb(armBack, 0, -24, armSwing, -16.5, -step * 0.8);
+    };
+
+    const chooseNextMovement = (time: number) => {
+      if (Math.random() < 0.28) {
+        facing *= -1;
+      }
+
+      const running = Math.random() < 0.2;
+      const speed = running ? randomBetween(54, 68) : randomBetween(26, 43);
+      targetVelocity = facing * speed;
+      const minX = width * (facing > 0 ? 0.42 : 0.26);
+      const maxX = width * (facing > 0 ? 0.74 : 0.56);
+      targetX = randomBetween(minX, maxX);
+      nextDecision = time + randomBetween(4_000, 8_800);
+    };
+
+    const drawStaticScene = () => {
+      walkerX = width * 0.47;
+      gait = 0.35;
+      drawTerrain();
+      drawFigure();
+    };
+
+    const stop = () => {
+      if (frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
+    };
+
+    const tick = (time: number) => {
+      frame = 0;
+
+      if (!visible || document.hidden || reducedMotion.matches) {
+        return;
+      }
+
+      const delta = Math.min(0.04, Math.max(0, (time - previousTime) / 1_000));
+      previousTime = time;
+
+      if (time >= nextDecision) {
+        chooseNextMovement(time);
+      }
+
+      velocity = mix(velocity, targetVelocity, 1 - Math.exp(-delta * 1.8));
+      worldOffset += velocity * delta;
+      walkerX = mix(walkerX, targetX, 1 - Math.exp(-delta * 0.42));
+      gait += Math.max(5.6, Math.abs(velocity) * 0.24) * delta;
+
+      drawTerrain();
+      drawFigure();
+      frame = requestAnimationFrame(tick);
+    };
+
+    const start = () => {
+      if (frame || !visible || document.hidden || reducedMotion.matches) {
+        return;
+      }
+
+      previousTime = performance.now();
+      frame = requestAnimationFrame(tick);
+    };
+
+    const resize = () => {
+      const bounds = root.getBoundingClientRect();
+      width = Math.max(1, bounds.width);
+      height = Math.max(1, bounds.height);
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+
+      if (walkerX === 0) {
+        walkerX = width * 0.47;
+        targetX = width * 0.62;
+      } else {
+        walkerX = clamp(walkerX, width * 0.2, width * 0.8);
+        targetX = clamp(targetX, width * 0.24, width * 0.76);
+      }
+
+      drawTerrain();
+      drawFigure();
+    };
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(root);
+
+    const intersectionObserver = new IntersectionObserver(([entry]) => {
+      visible = entry?.isIntersecting ?? true;
+      if (visible) {
+        start();
+      } else {
+        stop();
+      }
+    });
+    intersectionObserver.observe(root);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        start();
+      }
+    });
+
+    reducedMotion.addEventListener('change', () => {
+      if (reducedMotion.matches) {
+        stop();
+        drawStaticScene();
+      } else {
+        start();
+      }
+    });
+
+    resize();
+    if (reducedMotion.matches) {
+      drawStaticScene();
+    } else {
+      start();
+    }
+  });
+</script>
+
+<style>
+  .wandering-walker {
+    position: absolute;
+    top: clamp(12px, 2vw, 24px);
+    right: 0;
+    left: 0;
+    height: clamp(108px, 10vw, 132px);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .walker-scene {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .terrain,
+  .figure-head,
+  .figure-torso,
+  .figure-arms polyline,
+  .figure-legs polyline {
+    vector-effect: non-scaling-stroke;
+    stroke: var(--ink);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .terrain {
+    fill: none;
+    stroke-width: 1.15;
+  }
+
+  .figure-head {
+    fill: var(--ink);
+    stroke-width: 1;
+  }
+
+  .figure-torso,
+  .figure-arms polyline,
+  .figure-legs polyline {
+    fill: none;
+    stroke-width: 1.35;
+  }
+
+  .figure-arms polyline:first-child,
+  .figure-legs polyline:first-child {
+    opacity: 0.62;
+  }
+
+  @media (max-width: 820px) {
+    .wandering-walker {
+      position: relative;
+      top: auto;
+      right: auto;
+      left: auto;
+      grid-column: 1 / -1;
+      width: 100%;
+      height: 108px;
+      margin: 22px 0 34px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .wandering-walker {
+      height: 94px;
+      margin: 8px 0 28px;
+    }
+  }
+</style>
