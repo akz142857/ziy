@@ -120,6 +120,13 @@
     z-index: 20;
     border-bottom: 1px solid color-mix(in srgb, var(--line) 76%, transparent);
     background: color-mix(in srgb, var(--paper) 91%, transparent);
+    transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+  }
+
+  .site-header.is-hidden {
+    transform: translateY(calc(-100% - 1px));
+    pointer-events: none;
   }
 
   .header-inner {
