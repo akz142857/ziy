@@ -1,0 +1,1028 @@
+<div class="wandering-walker" data-wandering-walker aria-hidden="true">
+  <svg class="walker-scene" data-scene focusable="false">
+    <path class="terrain" data-terrain d="" />
+
+    <g class="pet-fire" data-pet-fire opacity="0">
+      <path class="pet-fire-stream pet-fire-stream-outer" data-fire-stream-outer d="" />
+      <path class="pet-fire-stream pet-fire-stream-inner" data-fire-stream-inner d="" />
+      <circle class="pet-fire-ember" data-fire-ember r="1.7" />
+      <g class="pet-fire-impact" data-fire-impact>
+        <path d="M0,0 C-2.7,-2.8 -1.4,-5.5 0,-7.2 C0.4,-4.6 3.1,-3.7 2.6,-1.6 C2.3,-0.5 1.2,0 0,0 Z" />
+        <path d="M-3.1,0 C-4.6,-1.7 -3.8,-3.6 -2.7,-4.6 C-2.6,-2.6 -0.9,-1.9 -1.2,-0.7 C-1.4,-0.2 -2.2,0 -3.1,0 Z" />
+        <path d="M3,0 C1.8,-1.5 2.5,-3.2 3.7,-4.1 C3.5,-2.3 5,-1.7 4.5,-0.6 C4.3,-0.2 3.7,0 3,0 Z" />
+      </g>
+    </g>
+
+    <g class="pet" data-pet>
+      <g data-pet-upper>
+        <path
+          class="pet-body"
+          data-pet-body-standing
+          d="M-6.3,-20.1 L-8.5,-19.8 L-7.9,-18.7 C-9.8,-18 -11.1,-16.9 -11.6,-15.4 L-13.2,-14.6 L-12,-13.7 C-13.2,-11.1 -13.7,-7.2 -12.2,-4.2 C-11.3,-2.2 -9.4,-2.1 -8.2,-4.1 C-7.5,-5.4 -7.5,-7.2 -7,-9 C-6.8,-5.6 -6.1,-2.3 -4.3,-1.1 C-2.6,0 -1,-1.2 0,-4.2 C0.9,-1.2 2.6,0 4.2,-1.1 C6.1,-2.3 6.8,-5.7 7.1,-9.1 C7.6,-7.2 7.7,-5.2 8.5,-3.9 C9.7,-2 11.6,-2.3 12.4,-4.3 C13.8,-7.5 13.2,-11.2 12,-13.8 L13.2,-14.7 L11.5,-15.5 C11,-17 9.8,-18.1 7.9,-18.8 L8.5,-19.9 L6.2,-20.2 C3,-21.2 -3.1,-21.2 -6.3,-20.1 Z"
+        />
+        <g data-pet-head>
+          <path
+            class="pet-head"
+            d="M-3.25,-27 C-5.2,-26.65 -6.35,-25.5 -6.55,-24 C-6.78,-22.1 -6.3,-19.7 -5.35,-18.2 C-3.2,-17.35 3.2,-17.35 5.35,-18.2 C6.3,-19.7 6.78,-22.1 6.55,-24 C6.35,-25.5 5.2,-26.65 3.25,-27 C4.45,-26.15 4.85,-24.8 4.4,-23.6 C4.05,-22.65 3.25,-22.3 2.45,-22.85 C1.75,-23.3 1.45,-24.7 0.55,-25.65 C0.18,-26.02 -0.18,-26.02 -0.55,-25.65 C-1.45,-24.7 -1.75,-23.3 -2.45,-22.85 C-3.25,-22.3 -4.05,-22.65 -4.4,-23.6 C-4.85,-24.8 -4.45,-26.15 -3.25,-27 Z"
+          />
+          <g class="pet-eyes">
+            <path d="M-3.05,-21.05 C-2.18,-20.8 -1.38,-20.62 -0.72,-20.08 C-0.92,-19.2 -1.48,-18.82 -2.15,-19 C-2.87,-19.2 -3.17,-19.95 -3.05,-21.05 Z" />
+            <path d="M0.72,-20.08 C1.38,-20.62 2.18,-20.8 3.05,-21.05 C3.17,-19.95 2.87,-19.2 2.15,-19 C1.48,-18.82 0.92,-19.2 0.72,-20.08 Z" />
+          </g>
+        </g>
+      </g>
+      <g data-pet-standing-feet>
+        <path class="pet-foot pet-foot-back" data-pet-foot-back d="M-7,-2.8 C-7.8,-1 -6.5,0 -3.9,0 C-1.7,0 -1,-1.2 -1.8,-2.9 C-3.2,-4 -5.7,-3.9 -7,-2.8 Z" />
+        <path class="pet-foot pet-foot-front" data-pet-foot-front d="M1.7,-2.9 C0.9,-1.2 1.8,0 4,0 C6.6,0 7.8,-1 7,-2.8 C5.7,-4 3.1,-4 1.7,-2.9 Z" />
+      </g>
+    </g>
+
+    <g class="figure" data-figure>
+      <circle class="figure-head" cx="0" cy="-31" r="3.2" />
+      <line class="figure-torso" x1="0" y1="-27.5" x2="0" y2="-15" />
+
+      <g class="figure-arms">
+        <polyline data-arm-back points="0,-24 0,-20 0,-16" />
+        <polyline data-arm-front points="0,-24 0,-20 0,-16" />
+      </g>
+
+      <g class="figure-legs">
+        <polyline data-leg-back points="-1,-15 0,-8 0,0" />
+        <polyline data-leg-front points="1,-15 0,-8 0,0" />
+      </g>
+    </g>
+  </svg>
+</div>
+<svg class="pet-overlay" data-pet-overlay aria-hidden="true" focusable="false"></svg>
+
+<script>
+  import {
+    createSceneRuntime,
+    createSeededRandom,
+    getActorScreenX,
+    updateCamera,
+    updateSceneRuntime,
+    type FireAbilityRuntime,
+    type PetRuntime,
+    type PetPose,
+    type InteractionPhase,
+    type SceneRuntime,
+    type WalkerRuntime,
+  } from '../lib/walker/simulation';
+  import { HABITAT_TIMING, sampleHabitatDelay } from '../lib/walker/habitat';
+
+  const clamp = (value: number, min: number, max: number) =>
+    Math.min(max, Math.max(min, value));
+
+  const mix = (from: number, to: number, amount: number) =>
+    from + (to - from) * amount;
+
+  const rotatePoint = (
+    x: number,
+    y: number,
+    angle: number,
+    pivotX = 0,
+    pivotY = 0,
+  ) => {
+    const radians = (angle * Math.PI) / 180;
+    const cosine = Math.cos(radians);
+    const sine = Math.sin(radians);
+    const localX = x - pivotX;
+    const localY = y - pivotY;
+    return {
+      x: pivotX + localX * cosine - localY * sine,
+      y: pivotY + localX * sine + localY * cosine,
+    };
+  };
+
+  const hash = (value: number, seed: number) => {
+    const result = Math.sin(value * 127.1 + seed * 311.7) * 43758.5453123;
+    return (result - Math.floor(result)) * 2 - 1;
+  };
+
+  const smoothNoise = (value: number, seed: number) => {
+    const lower = Math.floor(value);
+    const fraction = value - lower;
+    const eased = fraction * fraction * (3 - 2 * fraction);
+    return mix(hash(lower, seed), hash(lower + 1, seed), eased);
+  };
+
+  type PetHabitat = 'seal' | 'ascending' | 'terrain' | 'descending';
+
+  interface Point {
+    x: number;
+    y: number;
+  }
+
+  interface PetPlacement extends Point {
+    angle: number;
+    scaleX?: number;
+    scaleY?: number;
+    still?: boolean;
+  }
+
+  interface PetJump {
+    direction: 'up' | 'down';
+    from: PetPlacement;
+    landingScreenX: number;
+    prepareUntil: number;
+    startedAt: number;
+    duration: number;
+  }
+
+  const randomBetween = (random: () => number, min: number, max: number) =>
+    min + random() * (max - min);
+
+  const smoothstep = (value: number) => value * value * (3 - 2 * value);
+
+  document.querySelectorAll<HTMLElement>('[data-wandering-walker]').forEach((root, rootIndex) => {
+    const svg = root.querySelector<SVGSVGElement>('[data-scene]');
+    const petOverlay = root.nextElementSibling instanceof SVGSVGElement &&
+      root.nextElementSibling.matches('[data-pet-overlay]')
+      ? root.nextElementSibling
+      : null;
+    const hero = root.closest<HTMLElement>('.hero');
+    const petHome = hero?.querySelector<HTMLElement>('[data-pet-home]') ?? null;
+    const terrain = root.querySelector<SVGPathElement>('[data-terrain]');
+    const pet = root.querySelector<SVGGElement>('[data-pet]');
+    const petUpper = root.querySelector<SVGGElement>('[data-pet-upper]');
+    const petHead = root.querySelector<SVGGElement>('[data-pet-head]');
+    const petBodyStanding = root.querySelector<SVGPathElement>('[data-pet-body-standing]');
+    const petStandingFeet = root.querySelector<SVGGElement>('[data-pet-standing-feet]');
+    const petFootBack = root.querySelector<SVGPathElement>('[data-pet-foot-back]');
+    const petFootFront = root.querySelector<SVGPathElement>('[data-pet-foot-front]');
+    const petFire = root.querySelector<SVGGElement>('[data-pet-fire]');
+    const fireStreamOuter = root.querySelector<SVGPathElement>('[data-fire-stream-outer]');
+    const fireStreamInner = root.querySelector<SVGPathElement>('[data-fire-stream-inner]');
+    const fireEmber = root.querySelector<SVGCircleElement>('[data-fire-ember]');
+    const fireImpact = root.querySelector<SVGGElement>('[data-fire-impact]');
+    const figure = root.querySelector<SVGGElement>('[data-figure]');
+    const armBack = root.querySelector<SVGPolylineElement>('[data-arm-back]');
+    const armFront = root.querySelector<SVGPolylineElement>('[data-arm-front]');
+    const legBack = root.querySelector<SVGPolylineElement>('[data-leg-back]');
+    const legFront = root.querySelector<SVGPolylineElement>('[data-leg-front]');
+
+    if (
+      !svg ||
+      !petOverlay ||
+      !hero ||
+      !petHome ||
+      !terrain ||
+      !pet ||
+      !petUpper ||
+      !petHead ||
+      !petBodyStanding ||
+      !petStandingFeet ||
+      !petFootBack ||
+      !petFootFront ||
+      !petFire ||
+      !fireStreamOuter ||
+      !fireStreamInner ||
+      !fireEmber ||
+      !fireImpact ||
+      !figure ||
+      !armBack ||
+      !armFront ||
+      !legBack ||
+      !legFront
+    ) {
+      return;
+    }
+
+    petOverlay.append(petFire, pet);
+
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const dayKey = new Date().toISOString().slice(0, 10);
+    const seed = [...`${dayKey}-${rootIndex}`].reduce(
+      (value, character) => (value * 31 + character.charCodeAt(0)) >>> 0,
+      2166136261,
+    );
+    const random = createSeededRandom(seed);
+    const habitatRandom = () => {
+      const value = new Uint32Array(1);
+      crypto.getRandomValues(value);
+      return value[0] / 4294967296;
+    };
+    let width = 1;
+    let height = 1;
+    let sceneHeight = 1;
+    let terrainOffsetY = 0;
+    let sealAnchor: Point = { x: 0, y: 0 };
+    let runtime: SceneRuntime | null = null;
+    let habitat: PetHabitat = 'seal';
+    let jump: PetJump | undefined;
+    let nextAscentAt = Number.POSITIVE_INFINITY;
+    let nextReturnAt = Number.POSITIVE_INFINITY;
+    let habitatInitialized = false;
+    let previousTime = performance.now();
+    let lastTerrainDraw = 0;
+    let frame = 0;
+    let visible = true;
+    let renderedPetState = '';
+    let renderedPetPose = '';
+    let renderedInteraction = '';
+    let renderedAbility = '';
+
+    const terrainY = (worldX: number) => {
+      const amplitude = Math.min(34, Math.max(16, height * 0.21));
+      const broad = smoothNoise(worldX / 310, seed) * amplitude * 0.72;
+      const detail = smoothNoise(worldX / 128, seed + 19.7) * amplitude * 0.28;
+      return height * 0.72 + broad + detail;
+    };
+
+    const setHabitat = (nextHabitat: PetHabitat) => {
+      habitat = nextHabitat;
+      root.dataset.petHabitat = nextHabitat;
+      petOverlay.dataset.petHabitat = nextHabitat;
+    };
+
+    const setPetPose = (pose: PetPose, transition = true) => {
+      if (!runtime || runtime.pet.pose === pose) {
+        return;
+      }
+
+      runtime.pet.previousPose = transition ? runtime.pet.pose : pose;
+      runtime.pet.pose = pose;
+      runtime.pet.poseChangedAt = runtime.sceneTime;
+      runtime.pet.poseTransitionUntil = transition ? runtime.sceneTime + 0.34 : runtime.sceneTime;
+    };
+
+    const terrainPlacementAtScreenX = (screenX: number): PetPlacement => {
+      const worldX = (runtime?.cameraWorldX ?? 0) + screenX;
+      const groundY = terrainY(worldX);
+      const slope = terrainY(worldX + 2) - terrainY(worldX - 2);
+      return {
+        x: screenX,
+        y: terrainOffsetY + groundY,
+        angle: clamp((Math.atan2(slope, 4) * 180) / Math.PI, -7, 7),
+      };
+    };
+
+    const terrainPlacementForPet = (petRuntime: PetRuntime): PetPlacement =>
+      terrainPlacementAtScreenX(getActorScreenX(petRuntime, runtime?.cameraWorldX ?? 0));
+
+    const sealPlacement = (): PetPlacement => ({
+      x: sealAnchor.x,
+      y: sealAnchor.y,
+      angle: 0,
+      still: true,
+    });
+
+    const jumpPlacement = (sceneTime: number): PetPlacement => {
+      if (!jump) {
+        return habitat === 'terrain' && runtime
+          ? terrainPlacementForPet(runtime.pet)
+          : sealPlacement();
+      }
+
+      if (sceneTime < jump.startedAt) {
+        const preparationDuration = Math.max(0.001, jump.startedAt - (jump.prepareUntil - 0.34));
+        const preparation = clamp(
+          (sceneTime - (jump.prepareUntil - 0.34)) / preparationDuration,
+          0,
+          1,
+        );
+        const crouch = smoothstep(preparation);
+        return {
+          ...jump.from,
+          scaleX: 1 + crouch * 0.08,
+          scaleY: 1 - crouch * 0.12,
+          still: true,
+        };
+      }
+
+      const progress = clamp((sceneTime - jump.startedAt) / jump.duration, 0, 1);
+      const eased = smoothstep(progress);
+      const destination = jump.direction === 'up'
+        ? terrainPlacementAtScreenX(jump.landingScreenX)
+        : sealPlacement();
+      const travel = Math.abs(destination.y - jump.from.y);
+      const arcHeight = clamp(travel * 0.18, 42, 86);
+      const arc = Math.sin(progress * Math.PI);
+      const landingSquash = Math.sin(clamp((progress - 0.82) / 0.18, 0, 1) * Math.PI);
+
+      return {
+        x: mix(jump.from.x, destination.x, eased),
+        y: mix(jump.from.y, destination.y, eased) - arc * arcHeight,
+        angle: mix(jump.from.angle, destination.angle, eased) +
+          Math.sin(progress * Math.PI * 2) * (jump.direction === 'up' ? -3.5 : 3.5),
+        scaleX: 1 - arc * 0.05 + landingSquash * 0.08,
+        scaleY: 1 + arc * 0.09 - landingSquash * 0.1,
+        still: true,
+      };
+    };
+
+    const currentPetPlacement = (): PetPlacement => {
+      if (!runtime) {
+        return sealPlacement();
+      }
+      if (habitat === 'terrain') {
+        return terrainPlacementForPet(runtime.pet);
+      }
+      if (habitat === 'seal') {
+        return sealPlacement();
+      }
+      return jumpPlacement(runtime.sceneTime);
+    };
+
+    const drawTerrain = () => {
+      const sampleGap = width < 620 ? 9 : 11;
+      let path = '';
+
+      for (let x = -sampleGap; x <= width + sampleGap; x += sampleGap) {
+        const y = terrainY((runtime?.cameraWorldX ?? 0) + x);
+        path += `${x === -sampleGap ? 'M' : 'L'}${x.toFixed(1)},${y.toFixed(1)} `;
+      }
+
+      terrain.setAttribute('d', path.trim());
+    };
+
+    const setLimb = (
+      limb: SVGPolylineElement,
+      hipX: number,
+      hipY: number,
+      endX: number,
+      endY: number,
+      bend: number,
+    ) => {
+      const jointX = mix(hipX, endX, 0.48) + bend;
+      const jointY = mix(hipY, endY, 0.5) - 1.2;
+      limb.setAttribute(
+        'points',
+        `${hipX.toFixed(2)},${hipY.toFixed(2)} ${jointX.toFixed(2)},${jointY.toFixed(2)} ${endX.toFixed(2)},${endY.toFixed(2)}`,
+      );
+    };
+
+    const drawFigure = (
+      walker: WalkerRuntime,
+      cameraWorldX: number,
+      interactionPhase?: InteractionPhase,
+    ) => {
+      const screenX = getActorScreenX(walker, cameraWorldX);
+      const groundY = terrainY(walker.worldX);
+      const slope = terrainY(walker.worldX + 2) - terrainY(walker.worldX - 2);
+      const angle = clamp((Math.atan2(slope, 4) * 180) / Math.PI, -8, 8);
+      const motion = clamp(Math.abs(walker.worldVelocity) / 8, 0, 1);
+      const step = Math.sin(walker.gait) * motion;
+      const oppositeStep = Math.sin(walker.gait + Math.PI) * motion;
+      const lift = Math.max(0, Math.cos(walker.gait)) * 2.3 * motion;
+      const oppositeLift = Math.max(0, Math.cos(walker.gait + Math.PI)) * 2.3 * motion;
+      const footFrontX = step * 6.8;
+      const footBackX = oppositeStep * 6.8;
+      const armSwing = step * 5.3;
+
+      figure.setAttribute(
+        'transform',
+        `translate(${screenX.toFixed(2)} ${groundY.toFixed(2)}) rotate(${angle.toFixed(2)}) scale(${walker.facing} 1)`,
+      );
+
+      setLimb(legFront, 1, -15, footFrontX, -lift, -step * 1.5);
+      setLimb(legBack, -1, -15, footBackX, -oppositeLift, -oppositeStep * 1.5);
+      setLimb(armFront, 0, -24, -armSwing, -16.5, step * 0.8);
+      setLimb(armBack, 0, -24, armSwing, -16.5, -step * 0.8);
+
+      if (interactionPhase === 'signal' || interactionPhase === 'hold') {
+        setLimb(armFront, 0, -24, 5.5, -20.5, 0.8);
+      }
+    };
+
+    const drawPet = (
+      petRuntime: PetRuntime,
+      sceneTime: number,
+      placement: PetPlacement,
+      interactionPhase?: InteractionPhase,
+      fireAbility?: FireAbilityRuntime,
+    ) => {
+      const { x: screenX, y: groundY, angle } = placement;
+      const motion = placement.still
+        ? 0
+        : clamp(Math.abs(petRuntime.worldVelocity) / 7, 0, 1);
+      const step = Math.sin(petRuntime.gait) * motion;
+      const frontLift = Math.max(0, step) * 1.35;
+      const backLift = Math.max(0, -step) * 1.35;
+      const lean = clamp(
+        (petRuntime.targetSpeed - petRuntime.worldVelocity) * petRuntime.facing * 0.035,
+        -1.2,
+        1.2,
+      );
+      const weightShift = step * 0.62;
+      const breath = petRuntime.state === 'pause' ? Math.sin(sceneTime * 1.7) * 0.16 : 0;
+      const greeting = interactionPhase === 'signal' || interactionPhase === 'hold';
+      const greetingLean = greeting ? petRuntime.facing * 1.7 : 0;
+      const greetingLift = greeting ? -0.32 : 0;
+      const fireProgress = fireAbility
+        ? clamp(
+            (sceneTime - fireAbility.phaseStartedAt) /
+              Math.max(0.001, fireAbility.phaseUntil - fireAbility.phaseStartedAt),
+            0,
+            1,
+          )
+        : 0;
+      const fireStrength = !fireAbility
+        ? 0
+        : fireAbility.phase === 'prepare'
+          ? fireProgress
+          : fireAbility.phase === 'recover'
+            ? 1 - fireProgress
+            : 1;
+      const fireRecoil = -petRuntime.facing * fireStrength * 1.8;
+      const fireLift = -fireStrength * 0.22;
+      const poseProgress = clamp((sceneTime - petRuntime.poseChangedAt) / 0.34, 0, 1);
+      const easedPoseProgress = poseProgress * poseProgress * (3 - 2 * poseProgress);
+      const headPose = (pose: PetPose) => {
+        if (pose === 'observing') return { x: 0.65, y: -0.7, angle: -5.5 };
+        return { x: 0, y: 0, angle: 0 };
+      };
+      const previousHead = headPose(petRuntime.previousPose);
+      const currentHead = headPose(petRuntime.pose);
+      const headX = mix(previousHead.x, currentHead.x, easedPoseProgress);
+      const headY = mix(previousHead.y, currentHead.y, easedPoseProgress);
+      const headAngle = mix(previousHead.angle, currentHead.angle, easedPoseProgress);
+      const petAngle = angle * 0.62 + lean + greetingLean + fireRecoil;
+      const petGroundY = groundY + breath + greetingLift + fireLift;
+      const scaleX = placement.scaleX ?? 1;
+      const scaleY = placement.scaleY ?? 1;
+
+      pet.setAttribute(
+        'transform',
+        `translate(${screenX.toFixed(2)} ${petGroundY.toFixed(2)}) rotate(${petAngle.toFixed(2)}) scale(${(petRuntime.facing * 0.9 * scaleX).toFixed(3)} ${(0.9 * scaleY).toFixed(3)})`,
+      );
+
+      petUpper.setAttribute(
+        'transform',
+        `translate(${weightShift.toFixed(2)} ${breath.toFixed(2)}) rotate(${(-step * 0.65).toFixed(2)} 0 -2)`,
+      );
+      petHead.setAttribute(
+        'transform',
+        `translate(${headX.toFixed(2)} ${headY.toFixed(2)}) rotate(${headAngle.toFixed(2)} 0 -18.2)`,
+      );
+      petFootFront.setAttribute(
+        'transform',
+        `translate(${(step * 1.7).toFixed(2)} ${(-frontLift).toFixed(2)})`,
+      );
+      petFootBack.setAttribute(
+        'transform',
+        `translate(${(-step * 1.7).toFixed(2)} ${(-backLift).toFixed(2)})`,
+      );
+
+      if (renderedPetState !== petRuntime.state) {
+        renderedPetState = petRuntime.state;
+        root.dataset.petState = petRuntime.state;
+      }
+
+      if (renderedPetPose !== petRuntime.pose) {
+        renderedPetPose = petRuntime.pose;
+        root.dataset.petPose = petRuntime.pose;
+      }
+
+      const interactionName = interactionPhase ?? '';
+      if (renderedInteraction !== interactionName) {
+        renderedInteraction = interactionName;
+        if (interactionName) {
+          root.dataset.interaction = interactionName;
+        } else {
+          delete root.dataset.interaction;
+        }
+      }
+
+      let mouth = rotatePoint(6.05, -19.33, headAngle, 0, -18.2);
+      mouth.x += headX;
+      mouth.y += headY;
+      mouth = rotatePoint(mouth.x, mouth.y, -step * 0.65, 0, -2);
+      mouth.x += weightShift;
+      mouth.y += breath;
+      mouth.x *= petRuntime.facing * 0.9 * scaleX;
+      mouth.y *= 0.9 * scaleY;
+      mouth = rotatePoint(mouth.x, mouth.y, petAngle);
+      return {
+        x: screenX + mouth.x,
+        y: petGroundY + mouth.y,
+      };
+    };
+
+    const drawFire = (
+      ability: FireAbilityRuntime | undefined,
+      cameraWorldX: number,
+      sceneTime: number,
+      mouthAnchor: { x: number; y: number },
+    ) => {
+      if (!ability) {
+        petFire.setAttribute('opacity', '0');
+        if (renderedAbility) {
+          renderedAbility = '';
+          delete root.dataset.petAbility;
+        }
+        return;
+      }
+
+      const duration = Math.max(0.001, ability.phaseUntil - ability.phaseStartedAt);
+      const progress = clamp((sceneTime - ability.phaseStartedAt) / duration, 0, 1);
+      const originX = mouthAnchor.x;
+      const originY = mouthAnchor.y;
+      const impactX = ability.impactWorldX - cameraWorldX;
+      const impactY = terrainOffsetY + terrainY(ability.impactWorldX);
+      const deltaX = impactX - originX;
+      const flicker = Math.sin(sceneTime * 31) * 1.25;
+      const path = `M${originX.toFixed(2)},${originY.toFixed(2)} C${(originX + deltaX * 0.28).toFixed(2)},${(originY + 2 + flicker).toFixed(2)} ${(impactX - deltaX * 0.24).toFixed(2)},${(impactY - 8 - flicker).toFixed(2)} ${impactX.toFixed(2)},${impactY.toFixed(2)}`;
+      const streamOpacity = ability.phase === 'emit'
+        ? clamp(progress / 0.16, 0, 1) * clamp((1 - progress) / 0.12, 0, 1)
+        : 0;
+      const impactOpacity = ability.phase === 'emit'
+        ? clamp((progress - 0.55) / 0.3, 0, 0.72)
+        : ability.phase === 'impact'
+          ? 1
+          : ability.phase === 'recover'
+            ? 1 - progress
+            : 0;
+      const emberOpacity = ability.phase === 'prepare'
+        ? clamp(progress / 0.22, 0, 1)
+        : ability.phase === 'recover'
+          ? 1 - progress
+          : 1;
+
+      fireStreamOuter.setAttribute('d', path);
+      fireStreamInner.setAttribute('d', path);
+      fireStreamOuter.setAttribute('opacity', streamOpacity.toFixed(3));
+      fireStreamInner.setAttribute('opacity', streamOpacity.toFixed(3));
+      fireEmber.setAttribute('cx', originX.toFixed(2));
+      fireEmber.setAttribute('cy', originY.toFixed(2));
+      fireEmber.setAttribute('opacity', emberOpacity.toFixed(3));
+      fireImpact.setAttribute(
+        'transform',
+        `translate(${impactX.toFixed(2)} ${impactY.toFixed(2)}) scale(${(0.82 + Math.sin(sceneTime * 24) * 0.08).toFixed(3)})`,
+      );
+      fireImpact.setAttribute('opacity', impactOpacity.toFixed(3));
+      petFire.setAttribute('opacity', '1');
+
+      if (renderedAbility !== ability.phase) {
+        renderedAbility = ability.phase;
+        root.dataset.petAbility = ability.phase;
+      }
+    };
+
+    const holdPetStill = () => {
+      if (!runtime) {
+        return;
+      }
+      runtime.pet.worldVelocity = 0;
+      runtime.pet.targetSpeed = 0;
+      runtime.pet.targetWorldX = runtime.pet.worldX;
+      runtime.pet.pendingFacing = undefined;
+      runtime.pet.state = 'pause';
+      runtime.pet.stateUntil = Number.POSITIVE_INFINITY;
+      runtime.interaction = undefined;
+      runtime.fireAbility = undefined;
+      runtime.framingRecovery = false;
+    };
+
+    const beginAscent = () => {
+      if (!runtime || habitat !== 'seal') {
+        return;
+      }
+
+      holdPetStill();
+      setPetPose('standing');
+      const landingScreenX = clamp(
+        sealAnchor.x + randomBetween(habitatRandom, -16, 16),
+        38,
+        width - 38,
+      );
+      const startedAt = runtime.sceneTime + 0.38;
+      jump = {
+        direction: 'up',
+        from: sealPlacement(),
+        landingScreenX,
+        prepareUntil: startedAt,
+        startedAt,
+        duration: randomBetween(habitatRandom, 0.92, 1.08),
+      };
+      setHabitat('ascending');
+    };
+
+    const beginDescent = () => {
+      if (!runtime || habitat !== 'terrain') {
+        return;
+      }
+
+      const from = terrainPlacementForPet(runtime.pet);
+      holdPetStill();
+      setPetPose('standing');
+      const startedAt = runtime.sceneTime + 0.2;
+      jump = {
+        direction: 'down',
+        from,
+        landingScreenX: sealAnchor.x,
+        prepareUntil: startedAt,
+        startedAt,
+        duration: randomBetween(habitatRandom, 0.88, 1.04),
+      };
+      setHabitat('descending');
+    };
+
+    const initializeHabitat = () => {
+      if (!runtime || habitatInitialized) {
+        return;
+      }
+
+      habitatInitialized = true;
+      holdPetStill();
+      runtime.pet.pose = 'standing';
+      runtime.pet.previousPose = 'standing';
+      runtime.pet.poseChangedAt = runtime.sceneTime;
+      runtime.pet.poseTransitionUntil = runtime.sceneTime;
+      nextAscentAt = runtime.sceneTime + sampleHabitatDelay(
+        habitatRandom,
+        HABITAT_TIMING.firstAscent,
+      );
+      setHabitat('seal');
+    };
+
+    const canReturnToSeal = () => !!runtime &&
+      habitat === 'terrain' &&
+      !runtime.interaction &&
+      !runtime.fireAbility &&
+      runtime.pet.state === 'pause' &&
+      runtime.pet.pose === 'standing' &&
+      Math.abs(runtime.pet.worldVelocity) < 0.55 &&
+      runtime.sceneTime >= runtime.pet.poseTransitionUntil;
+
+    const updateHabitat = () => {
+      if (!runtime) {
+        return;
+      }
+
+      if (habitat === 'seal') {
+        if (runtime.sceneTime >= nextAscentAt) {
+          beginAscent();
+        }
+        return;
+      }
+
+      if (habitat === 'terrain') {
+        if (runtime.sceneTime >= nextReturnAt && canReturnToSeal()) {
+          beginDescent();
+        }
+        return;
+      }
+
+      if (!jump || runtime.sceneTime < jump.startedAt + jump.duration) {
+        return;
+      }
+
+      if (jump.direction === 'up') {
+        runtime.pet.worldX = runtime.cameraWorldX + jump.landingScreenX;
+        runtime.pet.targetWorldX = runtime.pet.worldX;
+        runtime.pet.worldVelocity = 0;
+        runtime.pet.targetSpeed = 0;
+        runtime.pet.state = 'pause';
+        runtime.pet.stateUntil = runtime.sceneTime + randomBetween(habitatRandom, 1.4, 2.8);
+        runtime.pet.needs.fatigue = clamp(runtime.pet.needs.fatigue, 0.08, 0.42);
+        runtime.interactionCooldownUntil = Math.max(
+          runtime.interactionCooldownUntil,
+          runtime.sceneTime + 9,
+        );
+        runtime.nextFireAt = Math.max(
+          runtime.nextFireAt,
+          runtime.sceneTime + randomBetween(habitatRandom, 18, 30),
+        );
+        nextReturnAt = runtime.sceneTime + sampleHabitatDelay(
+          habitatRandom,
+          HABITAT_TIMING.terrainStay,
+        );
+        setHabitat('terrain');
+      } else {
+        nextAscentAt = runtime.sceneTime + sampleHabitatDelay(
+          habitatRandom,
+          HABITAT_TIMING.sealRest,
+        );
+        setHabitat('seal');
+      }
+      jump = undefined;
+    };
+
+    const drawStaticScene = () => {
+      if (!runtime) {
+        return;
+      }
+
+      const walkerWorldX = runtime.cameraWorldX + width * 0.47;
+      const staticWalker: WalkerRuntime = {
+        ...runtime.walker,
+        worldX: walkerWorldX,
+        worldVelocity: 0,
+        targetSpeed: 0,
+        gait: 0.35,
+      };
+      const staticPet: PetRuntime = {
+        ...runtime.pet,
+        worldX: walkerWorldX - 72,
+        worldVelocity: 0,
+        targetSpeed: 0,
+        gait: 0.35,
+        state: 'pause',
+        pose: 'standing',
+        previousPose: 'standing',
+        poseChangedAt: 0,
+      };
+
+      drawTerrain();
+      const staticMouth = drawPet(
+        staticPet,
+        0,
+        sealPlacement(),
+      );
+      drawFire(undefined, runtime.cameraWorldX, 0, staticMouth);
+      drawFigure(staticWalker, runtime.cameraWorldX);
+    };
+
+    const drawLiveScene = () => {
+      if (!runtime) {
+        return;
+      }
+
+      const interactionPhase = runtime.interaction?.phase;
+      const mouthAnchor = drawPet(
+        runtime.pet,
+        runtime.sceneTime,
+        currentPetPlacement(),
+        habitat === 'terrain' ? interactionPhase : undefined,
+        habitat === 'terrain' ? runtime.fireAbility : undefined,
+      );
+      drawFire(
+        habitat === 'terrain' ? runtime.fireAbility : undefined,
+        runtime.cameraWorldX,
+        runtime.sceneTime,
+        mouthAnchor,
+      );
+      drawFigure(runtime.walker, runtime.cameraWorldX, interactionPhase);
+    };
+
+    const stop = () => {
+      if (frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
+    };
+
+    const tick = (time: number) => {
+      frame = 0;
+
+      if (!visible || document.hidden || reducedMotion.matches) {
+        return;
+      }
+
+      const delta = Math.min(0.04, Math.max(0, (time - previousTime) / 1_000));
+      previousTime = time;
+
+      if (!runtime) {
+        return;
+      }
+
+      const terrainAngleAt = (worldX: number) => {
+        const slope = terrainY(worldX + 2) - terrainY(worldX - 2);
+        return (Math.atan2(slope, 4) * 180) / Math.PI;
+      };
+      const interactionAllowed = [runtime.walker.worldX, runtime.pet.worldX]
+        .every((worldX) => Math.abs(terrainAngleAt(worldX)) <= 5.5);
+      const fireAllowed = Math.abs(terrainAngleAt(runtime.pet.worldX)) <= 4.5;
+      const petOnTerrain = habitat === 'terrain';
+      updateSceneRuntime(runtime, delta, width, random, {
+        interactionAllowed: petOnTerrain && interactionAllowed,
+        fireAllowed: petOnTerrain && fireAllowed,
+        fireTargetAllowed: (worldX) => Math.abs(terrainAngleAt(worldX)) <= 6,
+        petOnTerrain,
+      });
+      updateHabitat();
+
+      if (time - lastTerrainDraw >= 42) {
+        drawTerrain();
+        lastTerrainDraw = time;
+      }
+      drawLiveScene();
+      frame = requestAnimationFrame(tick);
+    };
+
+    const start = () => {
+      if (frame || !visible || document.hidden || reducedMotion.matches) {
+        return;
+      }
+
+      previousTime = performance.now();
+      frame = requestAnimationFrame(tick);
+    };
+
+    const resize = () => {
+      const bounds = root.getBoundingClientRect();
+      const heroBounds = hero.getBoundingClientRect();
+      const homeBounds = petHome.getBoundingClientRect();
+      width = Math.max(1, bounds.width);
+      height = Math.max(1, bounds.height);
+      sceneHeight = Math.max(1, heroBounds.height);
+      terrainOffsetY = bounds.top - heroBounds.top;
+      sealAnchor = {
+        x: homeBounds.left - heroBounds.left + homeBounds.width / 2,
+        y: homeBounds.top - heroBounds.top + 1,
+      };
+      svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
+      petOverlay.setAttribute('viewBox', `0 0 ${width} ${sceneHeight}`);
+
+      if (!runtime) {
+        runtime = createSceneRuntime(width, random() * 4_000, random);
+        initializeHabitat();
+      } else {
+        updateCamera(runtime, 0.04, width, habitat === 'terrain');
+      }
+
+      drawTerrain();
+      lastTerrainDraw = performance.now();
+      if (reducedMotion.matches) {
+        drawStaticScene();
+      } else {
+        drawLiveScene();
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(resize);
+    resizeObserver.observe(root);
+    resizeObserver.observe(hero);
+    resizeObserver.observe(petHome);
+
+    const intersectionObserver = new IntersectionObserver(([entry]) => {
+      visible = entry?.isIntersecting ?? true;
+      if (visible) {
+        start();
+      } else {
+        stop();
+      }
+    });
+    intersectionObserver.observe(root);
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        stop();
+      } else {
+        start();
+      }
+    });
+
+    reducedMotion.addEventListener('change', () => {
+      if (reducedMotion.matches) {
+        stop();
+        drawStaticScene();
+      } else {
+        drawLiveScene();
+        start();
+      }
+    });
+
+    resize();
+    if (reducedMotion.matches) {
+      drawStaticScene();
+    } else {
+      start();
+    }
+  });
+</script>
+
+<style>
+  .wandering-walker {
+    position: absolute;
+    top: clamp(76px, 9vw, 122px);
+    right: 0;
+    left: 0;
+    height: clamp(108px, 10vw, 132px);
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .walker-scene {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .pet-overlay {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+  }
+
+  .terrain,
+  .figure-head,
+  .figure-torso,
+  .figure-arms polyline,
+  .figure-legs polyline {
+    vector-effect: non-scaling-stroke;
+    stroke: var(--ink);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .terrain {
+    fill: none;
+    stroke-width: 1.15;
+  }
+
+  .pet-head,
+  .pet-body,
+  .pet-foot {
+    fill: #050505;
+  }
+
+  .pet-eyes path {
+    fill: #e4002d;
+  }
+
+  .pet-fire-stream {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .pet-fire-stream-outer {
+    stroke: #e43a22;
+    stroke-width: 4.6;
+  }
+
+  .pet-fire-stream-inner {
+    stroke: #ffb129;
+    stroke-width: 2.1;
+  }
+
+  .pet-fire-ember {
+    fill: #ffd65a;
+    stroke: #e43a22;
+    stroke-width: 0.7;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .pet-fire-impact path {
+    fill: #f05a24;
+  }
+
+  .pet-fire-impact path:first-child {
+    fill: #ffad29;
+  }
+
+  @media (max-width: 620px) {
+    .pet-fire-stream-outer {
+      stroke-width: 3.8;
+    }
+
+    .pet-fire-stream-inner {
+      stroke-width: 1.7;
+    }
+
+    .pet-fire-impact path:not(:first-child) {
+      display: none;
+    }
+  }
+
+  .pet-foot-back {
+    opacity: 0.76;
+  }
+
+  .figure-head {
+    fill: var(--ink);
+    stroke-width: 1;
+  }
+
+  .figure-torso,
+  .figure-arms polyline,
+  .figure-legs polyline {
+    fill: none;
+    stroke-width: 1.35;
+  }
+
+  .figure-arms polyline:first-child,
+  .figure-legs polyline:first-child {
+    opacity: 0.62;
+  }
+
+  @media (max-width: 900px) {
+    .wandering-walker {
+      position: relative;
+      top: auto;
+      right: auto;
+      left: auto;
+      grid-column: 1 / -1;
+      width: 100%;
+      height: 108px;
+      margin: 24px 0 54px;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .wandering-walker {
+      height: 94px;
+      margin: 14px 0 44px;
+    }
+  }
+</style>
