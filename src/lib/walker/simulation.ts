@@ -136,7 +136,7 @@ export const createSceneRuntime = (
     quietWindowUntil: 0,
     encounterArmed: true,
     nextInteractionBoostAt: randomBetween(random, 60, 90),
-    nextFireAt: randomBetween(random, 25, 45),
+    nextFireAt: randomBetween(random, 120, 240),
     walker: {
       worldX: walkerWorldX,
       worldVelocity: initialWalkerSpeed,
@@ -591,8 +591,8 @@ const firePhaseDuration = (phase: FirePhase, random: RandomSource) => {
 
 const fireCooldown = (width: number, random: RandomSource) =>
   isMobileWidth(width)
-    ? randomBetween(random, 55, 100)
-    : randomBetween(random, 45, 90);
+    ? randomBetween(random, 240, 360)
+    : randomBetween(random, 180, 300);
 
 export const tryStartFireAbility = (
   scene: SceneRuntime,

@@ -43,23 +43,42 @@ export interface HomeCopy {
   nav: {
     works: string;
     books: string;
+    now: string;
     about: string;
   };
   hero: {
+    eyebrow: string;
     title: string;
+    intro: string;
     projectsLink: string;
+    writingLink: string;
   };
   works: {
+    label: string;
     title: string;
     intro: string;
   };
   books: {
+    label: string;
     title: string;
     intro: string;
   };
+  now: {
+    label: string;
+    title: string;
+    updated: string;
+    items: Array<{
+      title: string;
+      description: string;
+    }>;
+  };
   about: {
+    label: string;
     title: string;
     lines: [string, string];
+    body: string;
+    invitation: string;
+    emailLink: string;
   };
   footer: {
     builtWith: string;
@@ -102,9 +121,9 @@ export const supportedLocales = Object.keys(localeInfo) as Locale[];
 export const homeCopy: Record<Locale, HomeCopy> = {
   zh: {
     meta: {
-      title: 'ZiyOne｜Ziy 的个人网站',
-      description: 'Ziy 的个人网站，收录开源项目、学习记录和电子书。',
-      ogDescription: 'Ziy 的项目、学习记录和电子书。',
+      title: 'Ziy｜AI 创作工具、Agent 与学习写作',
+      description: 'Ziy 的个人数字档案：探索 AI 原生创作，并公开项目、研究笔记与电子书。',
+      ogDescription: 'Ziy 在 ClayCosmos 探索 AI 原生创作，并把实践写成项目和书。',
     },
     accessibility: {
       skip: '跳到主要内容',
@@ -114,18 +133,41 @@ export const homeCopy: Record<Locale, HomeCopy> = {
       newTab: '在新标签页打开',
       techTags: '技术标签',
     },
-    nav: { works: '项目', books: '书籍', about: '关于' },
-    hero: { title: '我是Ziy', projectsLink: '查看项目' },
-    works: { title: '项目', intro: '正在做和以前做过的一些项目。' },
-    books: { title: '电子书', intro: '正在写或已经整理完成的书与文档。' },
-    about: { title: '关于', lines: ['一名艺术软件工程师', '和理想主义者。'] },
+    nav: { works: '项目', books: '写作', now: '此刻', about: '关于' },
+    hero: {
+      eyebrow: '艺术软件工程师 / AI 产品实践者',
+      title: '以软件为器，让创作与学习更自在。',
+      intro: '我是 Ziy。我在 ClayCosmos 探索 AI 原生创作，也把关于 Agent、知识系统与学习的实践写成项目和书。',
+      projectsLink: '看正在做的事',
+      writingLink: '读学习笔记',
+    },
+    works: { label: '项目', title: '正在做的事', intro: '少量，但持续。这里是正在运行、构建和归档中的项目。' },
+    books: { label: '写作', title: '把学习写成书', intro: '将复杂问题整理成可以反复阅读的路径。' },
+    now: {
+      label: '此刻',
+      title: '此刻',
+      updated: '更新于 2026.08',
+      items: [
+        { title: 'ClayCosmos', description: '推进 AI 原生创作流程与 Agent 产品实验。' },
+        { title: 'Ontology 写作', description: '把企业知识、行动与 AI 的关系整理成中文学习路径。' },
+        { title: 'Agent 研究', description: '持续观察个人知识系统与 Agent 协作方式。' },
+      ],
+    },
+    about: {
+      label: '关于',
+      title: '关于',
+      lines: ['好的工具会退到身后，', '让人专注于正在做的事。'],
+      body: '于是我做产品、写代码，也把学习整理成书。',
+      invitation: '如果你也在做 AI 创作工具、Agent 或个人知识系统，欢迎来信交换想法。',
+      emailLink: '写信给我',
+    },
     footer: { builtWith: '使用 Astro 构建。', backToTop: '回到顶部 ↑' },
   },
   en: {
     meta: {
-      title: 'ZiyOne | Ziy’s personal website',
-      description: 'Ziy’s personal website for open-source projects, learning notes, and books.',
-      ogDescription: 'Projects, learning notes, and books by Ziy.',
+      title: 'Ziy | AI creative tools, agents, and learning in public',
+      description: 'Ziy’s digital archive of AI-native creative tools, open projects, research notes, and books.',
+      ogDescription: 'Ziy explores AI-native creation at ClayCosmos and turns the practice into projects and books.',
     },
     accessibility: {
       skip: 'Skip to main content',
@@ -135,18 +177,41 @@ export const homeCopy: Record<Locale, HomeCopy> = {
       newTab: 'Opens in a new tab',
       techTags: 'Technology tags',
     },
-    nav: { works: 'Works', books: 'Books', about: 'About' },
-    hero: { title: 'I’m Ziy', projectsLink: 'View projects' },
-    works: { title: 'Projects', intro: 'A selection of what I’m building and what I’ve made.' },
-    books: { title: 'Books', intro: 'Books and notes in progress or already complete.' },
-    about: { title: 'About', lines: ['An artistic software engineer', 'and an idealist.'] },
+    nav: { works: 'Works', books: 'Writing', now: 'Now', about: 'About' },
+    hero: {
+      eyebrow: 'Artistic software engineer / AI product builder',
+      title: 'Quieter tools for creating and learning with AI.',
+      intro: 'I’m Ziy. At ClayCosmos I explore AI-native creation, then turn what I learn about agents and knowledge systems into open projects and books.',
+      projectsLink: 'See what I’m building',
+      writingLink: 'Read the notes',
+    },
+    works: { label: 'Projects', title: 'What I’m building', intro: 'A small, evolving set of products, tools, and archives.' },
+    books: { label: 'Writing', title: 'Learning, written down', intro: 'Complex questions arranged into paths worth returning to.' },
+    now: {
+      label: 'Now',
+      title: 'Now',
+      updated: 'Updated 2026.08',
+      items: [
+        { title: 'ClayCosmos', description: 'Shaping AI-native creative workflows and agent product experiments.' },
+        { title: 'Ontology notes', description: 'Turning enterprise knowledge, action, and AI into a Chinese learning path.' },
+        { title: 'Agent research', description: 'Studying personal knowledge systems and new ways for agents to collaborate.' },
+      ],
+    },
+    about: {
+      label: 'About',
+      title: 'About',
+      lines: ['Good tools recede,', 'so the work can come forward.'],
+      body: 'That is why I build products, write code, and turn learning into books.',
+      invitation: 'If you are exploring AI creative tools, agents, or personal knowledge systems, I would be glad to exchange ideas.',
+      emailLink: 'Write to me',
+    },
     footer: { builtWith: 'Built with Astro.', backToTop: 'Back to top ↑' },
   },
   ja: {
     meta: {
-      title: 'ZiyOne｜Ziyの個人サイト',
-      description: 'Ziyの個人サイト。オープンソースプロジェクト、学習ノート、書籍を紹介しています。',
-      ogDescription: 'Ziyのプロジェクト、学習ノート、書籍。',
+      title: 'Ziy｜AI創作ツール、エージェント、学びの記録',
+      description: 'AIネイティブな創作を探りながら、プロジェクト、研究ノート、書籍を公開するZiyのデジタルアーカイブ。',
+      ogDescription: 'ClayCosmosでAIネイティブな創作を探り、その実践をプロジェクトと書籍にまとめています。',
     },
     accessibility: {
       skip: 'メインコンテンツへ移動',
@@ -156,18 +221,41 @@ export const homeCopy: Record<Locale, HomeCopy> = {
       newTab: '新しいタブで開きます',
       techTags: '技術タグ',
     },
-    nav: { works: '作品', books: '書籍', about: '私について' },
-    hero: { title: 'Ziyです', projectsLink: 'プロジェクトを見る' },
-    works: { title: 'プロジェクト', intro: 'いま取り組んでいることと、これまでに作ったもの。' },
-    books: { title: '書籍', intro: '執筆中、またはまとめ終えた本とドキュメント。' },
-    about: { title: '私について', lines: ['アートを愛するソフトウェアエンジニア', 'そして、理想主義者。'] },
+    nav: { works: '作品', books: '文章', now: 'いま', about: '私について' },
+    hero: {
+      eyebrow: 'アーティスティック・ソフトウェアエンジニア / AIプロダクトビルダー',
+      title: 'ソフトウェアを道具に、創作と学びをもっと自由に。',
+      intro: 'Ziyです。ClayCosmosでAIネイティブな創作を探り、エージェントや知識システムについての実践を、プロジェクトと本にまとめています。',
+      projectsLink: 'いま作っているもの',
+      writingLink: '学びの記録を読む',
+    },
+    works: { label: '作品', title: 'いま作っているもの', intro: '数は少なく、歩みは止めず。運用中、開発中、記録中のプロジェクトです。' },
+    books: { label: '文章', title: '学びを、本にする', intro: '複雑な問いを、何度も読み返せる道筋へ。' },
+    now: {
+      label: 'いま',
+      title: 'いま',
+      updated: '2026.08 更新',
+      items: [
+        { title: 'ClayCosmos', description: 'AIネイティブな創作フローとエージェント製品を実験中。' },
+        { title: 'Ontology 執筆', description: '企業の知識・行動・AIの関係を中国語の学習経路に整理中。' },
+        { title: 'Agent リサーチ', description: '個人知識システムとエージェントの協働方法を観察中。' },
+      ],
+    },
+    about: {
+      label: '私について',
+      title: '私について',
+      lines: ['よい道具は、一歩退き、', '人を目の前の営みに戻す。'],
+      body: 'だから、プロダクトを作り、コードを書き、学びを本にしています。',
+      invitation: 'AI創作ツール、エージェント、個人知識システムに取り組んでいる方と、考えを交わせたらうれしいです。',
+      emailLink: 'メールを書く',
+    },
     footer: { builtWith: 'Astroで構築。', backToTop: 'ページ上部へ ↑' },
   },
 };
 
 export const profile = {
   name: 'ZiyOne',
-  email: 'tomi@claycosmos.ai',
+  email: 'z@ziy.one',
   github: 'https://github.com/akz142857',
 };
 
@@ -183,9 +271,9 @@ const projectRecords: Array<Omit<Project, 'description' | 'statusLabel'> & {
     status: 'active',
     statusLabels: { zh: '活跃', en: 'Active', ja: '運用中' },
     descriptions: {
-      zh: '一个围绕 AI 创作流程做的产品实验。',
-      en: 'A product experiment exploring AI-assisted creative workflows.',
-      ja: 'AIを活用した創作ワークフローを探るプロダクト実験。',
+      zh: '把 Agent、生成与迭代组织成可以持续使用的 AI 创作流程。',
+      en: 'Organizing agents, generation, and iteration into a creative workflow people can keep using.',
+      ja: 'エージェント、生成、反復を、継続して使えるAI創作フローにまとめています。',
     },
     tags: ['AI Agent', 'Product', 'Creative Tools'],
     href: 'https://claycosmos.ai',
@@ -198,9 +286,9 @@ const projectRecords: Array<Omit<Project, 'description' | 'statusLabel'> & {
     status: 'building',
     statusLabels: { zh: '开发中', en: 'Building', ja: '開発中' },
     descriptions: {
-      zh: '这个个人网站的源代码，使用 Astro 构建。',
-      en: 'The source code for this personal website, built with Astro.',
-      ja: 'Astroで構築した、この個人サイトのソースコード。',
+      zh: '一座持续生长的个人数字档案，公开留存作品、实验与写作。',
+      en: 'A living personal archive where projects, experiments, and writing remain open.',
+      ja: '作品、実験、文章を公開しながら育てていく個人デジタルアーカイブ。',
     },
     tags: ['Astro', 'Design', 'Open Web'],
     href: 'https://github.com/akz142857/ziy',
@@ -213,9 +301,9 @@ const projectRecords: Array<Omit<Project, 'description' | 'statusLabel'> & {
     status: 'active',
     statusLabels: { zh: '活跃', en: 'Active', ja: '運用中' },
     descriptions: {
-      zh: '抓取并归档公开的技术动态，按周生成摘要。',
-      en: 'Collects and archives public tech updates, then produces weekly digests.',
-      ja: '公開されている技術動向を収集・保存し、週ごとの要約を作成。',
+      zh: '每日归档公开技术动态，并压缩成可回看的每周研究摘要。',
+      en: 'Archiving public technology signals each day and compressing them into weekly research digests.',
+      ja: '公開技術シグナルを毎日保存し、振り返れる週次リサーチ要約にまとめます。',
     },
     tags: ['Python', 'Research', 'Knowledge'],
     href: 'https://github.com/akz142857/ziy/tree/main/scripts',

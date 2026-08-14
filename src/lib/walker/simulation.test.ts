@@ -354,7 +354,8 @@ describe('walker scene simulation', () => {
     expect(phases).toEqual(['prepare', 'emit', 'impact', 'recover']);
     expect(scene.fireAbility).toBeUndefined();
     expect(scene.sceneTime - startedAt).toBeLessThanOrEqual(1.75);
-    expect(scene.nextFireAt).toBeGreaterThanOrEqual(scene.sceneTime + 45);
+    expect(scene.nextFireAt).toBeGreaterThanOrEqual(scene.sceneTime + 180);
+    expect(scene.nextFireAt).toBeLessThanOrEqual(scene.sceneTime + 300);
     expect(scene.quietWindowUntil).toBeGreaterThan(scene.sceneTime);
   });
 
