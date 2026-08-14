@@ -51,12 +51,20 @@
     --line-strong: #bdb6a8;
     --vermillion: #b6402c;
     --moss: #59634b;
+    --ember: #d99a3f;
     --sans: "Helvetica Neue", "PingFang SC", "Hiragino Sans GB",
       "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
     --serif: "Iowan Old Style", "Songti SC", "STSong",
       "Noto Serif CJK SC", serif;
     --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     --shell: 1160px;
+
+    /* 章节呼吸节奏，比例约 1 : 1.6 : 2.6 */
+    --rhythm-1: clamp(64px, 6vw, 88px);
+    --rhythm-2: clamp(104px, 10vw, 140px);
+    --rhythm-3: clamp(160px, 15vw, 228px);
+    /* 正文行长上限：中日文 28–40 全角字符，英文 60–75 字符 */
+    --measure: 34em;
   }
 
   html:lang(ja) {
@@ -64,6 +72,11 @@
       "Noto Sans JP", sans-serif;
     --serif: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho",
       "Noto Serif JP", serif;
+    --measure: 32em;
+  }
+
+  html:lang(en) {
+    --measure: 66ch;
   }
 
   body {
@@ -72,9 +85,15 @@
     color: var(--ink);
     font-family: var(--sans);
     font-size: 16px;
-    line-height: 1.65;
+    line-height: 1.8;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* 中日文避头尾；不启用 overflow-wrap，避免拉丁词被拆断 */
+  :lang(zh-CN),
+  :lang(ja) {
+    line-break: strict;
   }
 
   ::selection {
@@ -125,9 +144,8 @@
     position: sticky;
     top: 0;
     z-index: 20;
-    border-bottom: 1px solid color-mix(in srgb, var(--line) 76%, transparent);
-    background: color-mix(in srgb, var(--paper) 91%, transparent);
-    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    background: var(--paper);
   }
 
   .header-inner {
@@ -236,7 +254,7 @@
 
   .hero-copy {
     position: absolute;
-    top: 37%;
+    top: 32%;
     left: 50%;
     width: min(100%, var(--shell));
     transform: translateX(-50%);
@@ -250,7 +268,8 @@
   }
 
   .hero-eyebrow {
-    color: var(--vermillion);
+    max-width: 46ch;
+    color: var(--muted);
     font-family: var(--mono);
     font-size: 11px;
     letter-spacing: 0.08em;
@@ -278,22 +297,39 @@
   }
 
   .hero-intro {
-    max-width: 680px;
+    max-width: var(--measure);
     margin-top: clamp(22px, 2.4vw, 32px);
     color: var(--muted);
     font-size: 15px;
     line-height: 1.9;
   }
 
+  /* 朱文印（阳刻）：实心朱底、纸色字，是全页唯一的朱红块面 */
   .seal {
+    position: relative;
+    margin-left: auto;
     width: clamp(58px, 4.6vw, 72px);
     aspect-ratio: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
     flex: none;
-    border: 1.5px solid var(--vermillion);
-    color: var(--vermillion);
+    padding: 5px;
+    /* 四角半径不等：手刻的石章不会是完美方形 */
+    border-radius: 2px 4px 2px 3px;
+    background: var(--vermillion);
+    color: var(--paper-light);
+    box-shadow: inset 0 0 14px color-mix(in srgb, var(--ink) 34%, transparent);
+  }
+
+  /* 印面边栏：留白一线，篆刻的边 */
+  .seal::after {
+    content: "";
+    position: absolute;
+    inset: 4px;
+    border: 1px solid color-mix(in srgb, var(--paper-light) 46%, transparent);
+    border-radius: 1px 3px 1px 2px;
+    pointer-events: none;
   }
 
   .seal > span {
@@ -305,7 +341,7 @@
 
   .seal small {
     padding-left: 5px;
-    border-left: 1px solid currentColor;
+    border-left: 1px solid color-mix(in srgb, currentColor 62%, transparent);
     font-family: var(--mono);
     font-size: 7px;
     line-height: 1.45;
@@ -340,8 +376,14 @@
     border-color: var(--vermillion);
   }
 
+  /* 箭头语义：站内锚点 ↓ 向下推，外链 ↗ 向右上推 */
   .text-link:hover > span:not(.visually-hidden),
   .text-link:focus-visible > span:not(.visually-hidden) {
+    transform: translateY(2px);
+  }
+
+  .text-link.muted:hover > span:not(.visually-hidden),
+  .text-link.muted:focus-visible > span:not(.visually-hidden) {
     transform: translate(2px, -2px);
   }
 
@@ -351,15 +393,16 @@
   }
 
   .section {
-    padding-block: clamp(100px, 13vw, 170px);
+    padding-block: var(--rhythm-2);
   }
 
+  /* 项目与写作是同一口气，之间收紧；写作之后放大留白，作为下半页的换气 */
   #works {
-    padding-block: clamp(88px, 8vw, 112px) clamp(72px, 6vw, 88px);
+    padding-block: var(--rhythm-2) var(--rhythm-1);
   }
 
   #books {
-    padding-block: clamp(88px, 7vw, 104px) clamp(110px, 10vw, 150px);
+    padding-block: var(--rhythm-1) var(--rhythm-3);
   }
 
   .section-heading {
@@ -424,6 +467,11 @@
 
   .project-number {
     padding-top: 7px;
+    color: var(--muted);
+  }
+
+  .project-row:hover .project-number,
+  .project-row:focus-visible .project-number {
     color: var(--vermillion);
   }
 
@@ -442,14 +490,12 @@
   }
 
   .status {
-    border: 1px solid var(--line);
     padding: 2px 0;
-    border-color: transparent;
     color: var(--muted);
   }
 
   .project-main > p {
-    max-width: 630px;
+    max-width: var(--measure);
     margin-top: 8px;
     color: var(--muted);
     font-size: 14px;
@@ -503,8 +549,8 @@
     display: grid;
     grid-template-columns: minmax(180px, 0.82fr) minmax(180px, 1fr);
     gap: clamp(28px, 3.5vw, 52px);
-    align-items: end;
-    padding: 36px clamp(36px, 5vw, 72px) 40px 0;
+    align-items: start;
+    padding: 30px clamp(36px, 5vw, 72px) 40px 0;
     border-right: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
   }
@@ -558,7 +604,7 @@
   }
 
   .book-kind {
-    color: var(--vermillion);
+    color: var(--muted);
   }
 
   .book-info h3 {
@@ -664,8 +710,20 @@
   }
 
   .now-section {
-    border-top: 1px solid var(--line);
-    padding-block: clamp(92px, 9vw, 132px);
+    position: relative;
+    padding-block: var(--rhythm-2);
+  }
+
+  /* 断线而非通栏分隔：留出未闭合的余味 */
+  .now-section::before,
+  .about-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: max(32px, calc(50vw - var(--shell) / 2));
+    width: clamp(72px, 8vw, 112px);
+    height: 1px;
+    background: var(--line-strong);
   }
 
   .now-grid {
@@ -711,7 +769,7 @@
 
   .now-item > span {
     padding-top: 5px;
-    color: var(--vermillion);
+    color: var(--muted);
     font-family: var(--mono);
     font-size: 10px;
     letter-spacing: 0.08em;
@@ -725,7 +783,7 @@
   }
 
   .now-item p {
-    max-width: 560px;
+    max-width: var(--measure);
     margin-top: 7px;
     color: var(--muted);
     font-size: 14px;
@@ -733,8 +791,8 @@
   }
 
   .about-section {
-    border-top: 1px solid var(--line);
-    padding-block: clamp(110px, 10vw, 150px);
+    position: relative;
+    padding-block: var(--rhythm-2) var(--rhythm-3);
   }
 
   .about-grid {
@@ -785,12 +843,12 @@
   }
 
   .about-body {
-    max-width: 500px;
+    max-width: var(--measure);
     margin-top: 26px;
   }
 
   .about-invitation {
-    max-width: 500px;
+    max-width: var(--measure);
     margin-top: 18px;
     color: var(--ink);
   }
